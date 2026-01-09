@@ -17,8 +17,15 @@ message = "Have fun!"
 running = True
 while running:
     screen.fill((0, 0, 0))
-    text = font.render(message, True, (255, 255, 255))
-    screen.blit(text, (100, 100))
+    
+    # Handle multi-line rendering
+    lines = message.split('\n')
+    y_offset = 100
+    for line in lines:
+        text = font.render(line, True, (255, 255, 255))
+        screen.blit(text, (100, y_offset))
+        y_offset += 70
+    
     pygame.display.flip()
 
     for event in pygame.event.get():
@@ -33,8 +40,11 @@ while running:
         # Play sound on any key or mouse press
         if event.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
             sound.play()
-            if len(message) > 50:
-                message = "GO"
+            lines = message.split('\n')
+            if len(lines[-1]) > 50:
+                message += "\n"
+            if len(lines) > 10:
+                message = ""
             if event.type == pygame.MOUSEBUTTONDOWN:
                 message += " Click"
             else:
