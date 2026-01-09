@@ -12,11 +12,12 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("Kid Input Sandbox")
 
 font = pygame.font.SysFont(None, 60)
-text = font.render("Have fun!", True, (255, 255, 255))
+message = "Have fun!"
 
 running = True
 while running:
     screen.fill((0, 0, 0))
+    text = font.render(message, True, (255, 255, 255))
     screen.blit(text, (100, 100))
     pygame.display.flip()
 
@@ -32,6 +33,18 @@ while running:
         # Play sound on any key or mouse press
         if event.type in (pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN):
             sound.play()
+            if len(message) > 50:
+                message = "GO"
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                message += " Click"
+            else:
+                key_name = pygame.key.name(event.key)
+                if len(key_name) == 1:
+                    # Single character key
+                    message += key_name.upper()
+                else:
+                    # Special key (home, space, return, etc.)
+                    message += " " + key_name.upper()
 
 pygame.quit()
 sys.exit()
